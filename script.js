@@ -39,10 +39,16 @@ d3.json("data.json", function(data) {
         }))
         .range([0, width]); // max x screen space is width - twice padding
 
+    // var y = d3.scaleLinear()
+    //     .domain([d3.min(data, function(d) {
+    //         return d.distance
+    //     }), d3.max(data, function(d) {
+    //         return d.distance
+    //     })])
+    //     .range([height, 0]); // max y screen space is height - twice padding
+
     var y = d3.scaleLinear()
-        .domain([d3.min(data, function(d) {
-            return d.distance
-        }), d3.max(data, function(d) {
+        .domain([0, d3.max(data, function(d) {
             return d.distance
         })])
         .range([height, 0]); // max y screen space is height - twice padding
