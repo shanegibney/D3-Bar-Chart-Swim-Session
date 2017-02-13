@@ -13,7 +13,7 @@ console.log(height);
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("../data/data.json", function(data) {
+d3.json("data.json", function(data) {
     // data = info[0];
     // var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S.%L");
     var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
