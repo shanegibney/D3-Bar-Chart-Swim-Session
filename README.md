@@ -11,3 +11,5 @@ The colour of each bar depicts the intensity of the session. Intensity = 1/(disa
 The intensity is inverted so that the most intense sessions have the darkest colours instead of the lightest.
 
 The bar colour uses scaleSequential interpolateInferno to show the intensity of the session.
+
+[gh-pages](http://shanegibney.github.io/D3-Bar-Chart-Swim-Session/)
