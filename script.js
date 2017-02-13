@@ -7,26 +7,20 @@ var svg = d3.select("svg"),
     },
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
-console.log(width);
-console.log(height);
 
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.json("data.json", function(data) {
-    // data = info[0];
-    // var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S.%L");
     var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
 
     data.forEach(function(d) {
-            // d.date = d.date.slice(0, -3); // remove microseconds
             d.date = parseTime(d.date);
             d.end = parseTime(d.end);
             d.duration = ((d.end - d.date) / (60 * 1000)); // session duration in minutes
             console.log("duration: " + d.duration + " minutes");
             d.distance = +d.distance;
             d.intensity = (1 / (d.distance / d.duration)); // inverse of intensity so light colour low intensity and dark colour high intensity
-            // d.intensity = (1/(d.distance * d.duration));
             return d;
         },
         function(error, data) {
@@ -38,14 +32,6 @@ d3.json("data.json", function(data) {
             return d.date;
         }))
         .range([0, width]); // max x screen space is width - twice padding
-
-    // var y = d3.scaleLinear()
-    //     .domain([d3.min(data, function(d) {
-    //         return d.distance
-    //     }), d3.max(data, function(d) {
-    //         return d.distance
-    //     })])
-    //     .range([height, 0]); // max y screen space is height - twice padding
 
     var y = d3.scaleLinear()
         .domain([0, d3.max(data, function(d) {
@@ -70,13 +56,15 @@ d3.json("data.json", function(data) {
         g.select('text')
             .attr("x", x(d.date) + dur(d.duration + 5))
             .attr("y", y(d.distance) + 10)
-            .text(d.distance + "m");
-
-        g.select('tspan')
+            .text(d.distance + "m")
+            .append('tspan')
+            .text(d.number)
             .attr("x", x(d.date) + dur(d.duration + 5))
             .attr("y", y(d.distance) + 30)
-            .text("blah");
-        // console.log("mouseOver " + d.number);
+            .append('tspan')
+            .text(d.date)
+            .attr("x", x(d.date) + dur(d.duration + 5))
+            .attr("y", y(d.distance) + 50);
     }
 
     function handleMouseOut(d) {
@@ -113,9 +101,6 @@ d3.json("data.json", function(data) {
         .on("mouseout", handleMouseOut);
 
     g.append('text')
-        .attr('x', 9)
-        .attr('dy', '.35em')
-        .append('tspan')
         .attr('x', 9)
         .attr('dy', '.35em');
 
