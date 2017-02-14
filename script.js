@@ -23,7 +23,8 @@ d3.json("data.json", function(data) {
             d.duration = ((d.end - d.date) / (60 * 1000)); // session duration in minutes
             // console.log("duration: " + d.duration + " minutes");
             d.distance = +d.distance;
-            d.intensity = (1 / (d.distance / d.duration)); // inverse of intensity so light colour low intensity and dark colour high intensity
+            d.intensityInverted = (1 / (d.distance / d.duration)); // inverse of intensity so light colour low intensity and dark colour high intensity
+            d.intensity = Math.round(d.distance / d.duration); // actually intensity, metres per minute.
             return d;
         },
         function(error, data) {
@@ -50,38 +51,44 @@ d3.json("data.json", function(data) {
 
     var colorScale = d3.scaleSequential(d3.interpolateInferno)
         .domain([0, d3.max(data, function(d) {
-            return d.intensity;
+            return d.intensityInverted;
         })])
 
     function handleMouseOver(d) {
         d3.select(this)
             .style("fill", "lightBlue")
         g.select('text')
-            .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 5)
+            .attr("x", 15)
+            .attr("y", 5)
+            // .attr("x", x(d.date) + dur(d.duration + 5))
+            // .attr("y", y(d.distance) + 5)
             .text("Session no. " + d.number)
             .append('tspan')
             .text("Date: " + mouseoverTime(d.mouseoverDisplay))
-            .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 30)
+            .attr("x", 15)
+            .attr("y", 30)
             .append('tspan')
             .text("Distance: " + d.distance + "m")
-            .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 50)
+            .attr("x", 15)
+            .attr("y", 50)
             .append('tspan')
             .text("Duration: " + d.duration + " mins")
-            .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 70)
+            .attr("x", 15)
+            .attr("y", 70)
+            .append('tspan')
+            .text("Intensity: " + d.intensity + " meters/mins")
+            .attr("x", 15)
+            .attr("y", 90)
             .append('tspan')
             .text("Pool: " + d.pool + " (" + d.course + ")")
-            .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 90);
+            .attr("x", 15)
+            .attr("y", 110);
     }
 
     function handleMouseOut(d) {
         d3.select(this)
             .style("fill", function(d) {
-                return colorScale(d.intensity);
+                return colorScale(d.intensityInverted);
             });
         g.select('text').text("");
         // console.log("mouseOut " + d.number);
@@ -91,7 +98,7 @@ d3.json("data.json", function(data) {
         .data(data)
         .enter().append("rect")
         .style("fill", function(d) {
-            return colorScale(d.intensity);
+            return colorScale(d.intensityInverted);
         })
         .attr("class", "bar")
         .attr("x", function(d) {
@@ -118,14 +125,14 @@ d3.json("data.json", function(data) {
 
     g.append("g")
         .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + (height + 5) + ")")
-        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%m-%d %H:%M")))
+        .attr("transform", "translate(0," + (height + 2) + ")")
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%e %b %Y")))
         // .call(d3.axisBottom(x))
         .selectAll("text")
         .style("text-anchor", "end")
         .attr("dx", "-.8em")
         .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)");
+        .attr("transform", "rotate(-35)");
 
     g.append("g")
         .attr("class", "axis axis--y")
