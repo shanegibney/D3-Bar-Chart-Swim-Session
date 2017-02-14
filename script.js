@@ -55,16 +55,20 @@ d3.json("data.json", function(data) {
             .style("fill", "lightBlue")
         g.select('text')
             .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 10)
-            .text(d.distance + "m")
+            .attr("y", y(d.distance) + 5)
+            .text("Session no. " + d.number)
             .append('tspan')
-            .text(d.number)
+            .text("Date: " + d.date)
             .attr("x", x(d.date) + dur(d.duration + 5))
             .attr("y", y(d.distance) + 30)
             .append('tspan')
-            .text(d.date)
+            .text("Distance: " + d.distance)
             .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 50);
+            .attr("y", y(d.distance) + 50)
+            .append('tspan')
+            .text("Duration: " + d.duration + " mins")
+            .attr("x", x(d.date) + dur(d.duration + 5))
+            .attr("y", y(d.distance) + 70);
     }
 
     function handleMouseOut(d) {
