@@ -12,13 +12,16 @@ var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.json("data.json", function(data) {
+    // var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
     var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
+    var mouseoverTime = d3.timeFormat("%a %e %b %Y %H:%M");
 
     data.forEach(function(d) {
+            d.mouseoverDisplay = parseTime(d.date);
             d.date = parseTime(d.date);
             d.end = parseTime(d.end);
             d.duration = ((d.end - d.date) / (60 * 1000)); // session duration in minutes
-            console.log("duration: " + d.duration + " minutes");
+            // console.log("duration: " + d.duration + " minutes");
             d.distance = +d.distance;
             d.intensity = (1 / (d.distance / d.duration)); // inverse of intensity so light colour low intensity and dark colour high intensity
             return d;
@@ -58,17 +61,21 @@ d3.json("data.json", function(data) {
             .attr("y", y(d.distance) + 5)
             .text("Session no. " + d.number)
             .append('tspan')
-            .text("Date: " + d.date)
+            .text("Date: " + mouseoverTime(d.mouseoverDisplay))
             .attr("x", x(d.date) + dur(d.duration + 5))
             .attr("y", y(d.distance) + 30)
             .append('tspan')
-            .text("Distance: " + d.distance)
+            .text("Distance: " + d.distance + "m")
             .attr("x", x(d.date) + dur(d.duration + 5))
             .attr("y", y(d.distance) + 50)
             .append('tspan')
             .text("Duration: " + d.duration + " mins")
             .attr("x", x(d.date) + dur(d.duration + 5))
-            .attr("y", y(d.distance) + 70);
+            .attr("y", y(d.distance) + 70)
+            .append('tspan')
+            .text("Pool: " + d.pool + " (" + d.course + ")")
+            .attr("x", x(d.date) + dur(d.duration + 5))
+            .attr("y", y(d.distance) + 90);
     }
 
     function handleMouseOut(d) {
@@ -107,6 +114,7 @@ d3.json("data.json", function(data) {
     g.append('text')
         .attr('x', 9)
         .attr('dy', '.35em');
+    // .attr("class", "shadow");
 
     g.append("g")
         .attr("class", "axis axis--x")
