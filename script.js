@@ -25,11 +25,18 @@ d3.json("data.json", function(data) {
             d.distance = +d.distance;
             d.intensityInverted = (1 / (d.distance / d.duration)); // inverse of intensity so light colour low intensity and dark colour high intensity
             d.intensity = Math.round(d.distance / d.duration); // actually intensity, metres per minute.
+            d.course = d.course.toLowerCase();
             return d;
         },
         function(error, data) {
             if (error) throw error;
         });
+
+    var total = 0;
+    data.forEach(function(d) {
+        total = d.distance + total;
+    });
+    total = String(total).replace(/(.)(?=(\d{3})+$)/g, '$1,')
 
     var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) {
@@ -80,7 +87,7 @@ d3.json("data.json", function(data) {
             .attr("x", 15)
             .attr("y", 90)
             .append('tspan')
-            .text("Pool: " + d.pool + " (" + d.course + ")")
+            .text("Pool: " + d.pool + "  (" + d.course + ")")
             .attr("x", 15)
             .attr("y", 110);
     }
@@ -90,7 +97,7 @@ d3.json("data.json", function(data) {
             .style("fill", function(d) {
                 return colorScale(d.intensityInverted);
             });
-        g.select('text').text("");
+        g.select('text').text("Total distance since 9th Nov. 2016 " + total + "m");
         // console.log("mouseOut " + d.number);
     }
 
@@ -119,8 +126,9 @@ d3.json("data.json", function(data) {
         .on("mouseout", handleMouseOut);
 
     g.append('text')
-        .attr('x', 9)
-        .attr('dy', '.35em');
+        .attr('x', 15)
+        .attr('dy', 5)
+        .text("Total distance since 9th Nov. 2016 " + total + "m");
     // .attr("class", "shadow");
 
     g.append("g")
