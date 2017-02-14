@@ -152,4 +152,23 @@ d3.json("data.json", function(data) {
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
         .text("distance (m)");
-});;
+
+    var chart = dc.rowChart("#rowchart");
+    var ndx = crossfilter(data),
+        durDimension = ndx.dimension(function(d) {
+            return d.duration;
+        });
+
+    distSumGroup = durDimension.group().reduceSum(function(d) {
+        return d.distance;
+    });
+    chart
+        .width(768)
+        .height(480)
+        .x(d3.scale.linear().domain([6, 20]))
+        .elasticX(true)
+        .dimension(durtDimension)
+        .group(distSumGroup)
+        .render();
+
+});
