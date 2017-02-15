@@ -15,6 +15,7 @@ d3.json("data.json", function(data) {
     // var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
     var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
     var mouseoverTime = d3.timeFormat("%a %e %b %Y %H:%M");
+    var minTime = d3.timeFormat("%b%e %Y");
 
     data.forEach(function(d) {
             d.mouseoverDisplay = parseTime(d.date);
@@ -32,10 +33,15 @@ d3.json("data.json", function(data) {
             if (error) throw error;
         });
 
+
     var total = 0;
     data.forEach(function(d) {
         total = d.distance + total;
     });
+    var minDate = d3.min(data, function(d) {
+        return d.date;
+    });
+
     total = String(total).replace(/(.)(?=(\d{3})+$)/g, '$1,')
 
     var x = d3.scaleTime()
@@ -97,7 +103,7 @@ d3.json("data.json", function(data) {
             .style("fill", function(d) {
                 return colorScale(d.intensityInverted);
             });
-        g.select('text').text("Total distance since 9th Nov. 2016 " + total + "m");
+        g.select('text').text("Total distance since " + minTime(minDate) + ": " + total + "m");
         // console.log("mouseOut " + d.number);
     }
 
@@ -128,7 +134,7 @@ d3.json("data.json", function(data) {
     g.append('text')
         .attr('x', 15)
         .attr('dy', 5)
-        .text("Total distance since 9th Nov. 2016 " + total + "m");
+        .text("Total distance since " + minTime(minDate) + ": " + total + "m");
     // .attr("class", "shadow");
 
     g.append("g")
@@ -152,23 +158,5 @@ d3.json("data.json", function(data) {
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
         .text("distance (m)");
-
-    var chart = dc.rowChart("#rowchart");
-    var ndx = crossfilter(data),
-        durDimension = ndx.dimension(function(d) {
-            return d.duration;
-        });
-
-    distSumGroup = durDimension.group().reduceSum(function(d) {
-        return d.distance;
-    });
-    chart
-        .width(768)
-        .height(480)
-        .x(d3.scale.linear().domain([6, 20]))
-        .elasticX(true)
-        .dimension(durtDimension)
-        .group(distSumGroup)
-        .render();
 
 });
