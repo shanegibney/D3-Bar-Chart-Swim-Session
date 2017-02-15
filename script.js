@@ -15,7 +15,7 @@ d3.json("data.json", function(data) {
     // var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
     var parseTime = d3.timeParse("%Y-%m-%d %H:%M");
     var mouseoverTime = d3.timeFormat("%a %e %b %Y %H:%M");
-    var minTime = d3.timeFormat("%b%e %Y");
+    var minTime = d3.timeFormat("%b%e, %Y");
 
     data.forEach(function(d) {
             d.mouseoverDisplay = parseTime(d.date);

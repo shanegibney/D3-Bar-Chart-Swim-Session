@@ -18,9 +18,7 @@ The bar colour uses scaleSequential interpolateInferno to show the intensity of 
 
 1. Add form to allow a user upload a json file, in the correct format. Load this file to browser cache and from there use it to populate graph. Therefore no need for a backend DB.
 
-2. Replace hard coded date in total distance with min(d.date), so that it will always get the earliest date from any set of date.
-
-3. Originally I wanted a pie chart, each segment of which would be days of the week.
+2. Originally I wanted a pie chart, each segment of which would be days of the week.
 
 Using dc.js and crossfilter, make this interactive with the bar chart. This would require rewriting this code with d3.js v3.
 
