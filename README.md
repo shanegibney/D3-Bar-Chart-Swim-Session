@@ -2,6 +2,8 @@
 
 [gh-pages](http://shanegibney.github.io/D3-Bar-Chart-Swim-Session/)
 
+Mouseover any bar to reveal details for that session.
+
 This bar chart respresents swim sessions.
 
 The chart graphs distance in meters against date.
@@ -18,7 +20,9 @@ The bar colour uses scaleSequential interpolateInferno to show the intensity of 
 
 1. Add form to allow a user upload a json file, in the correct format. Load this file to browser cache and from there use it to populate graph. Therefore no need for a backend DB.
 
-2. Originally I wanted a pie chart, each segment of which would be days of the week.
+2. Added white shadow to text so it can be seen against bar chart.
+
+3. Originally I wanted a pie chart, each segment of which would be days of the week.
 
 Using dc.js and crossfilter, make this interactive with the bar chart. This would require rewriting this code with d3.js v3.
 
