@@ -4,7 +4,7 @@
 
 Mouseover any bar to reveal details for that session.
 
-This bar chart respresents swim sessions.
+This bar chart represents swim sessions.
 
 The chart graphs distance in meters against date.
 
