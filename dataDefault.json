@@ -382,5 +382,13 @@
         "distance": "3100",
         "course": "LC",
         "pool": "UCD"
+    },
+    {
+        "number": "49",
+        "date": "2017-02-26 11:25",
+        "end": "2017-02-26 12:45",
+        "distance": "3000",
+        "course": "LC",
+        "pool": "UCD"
     }
 ]
